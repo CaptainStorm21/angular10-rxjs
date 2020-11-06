@@ -19,7 +19,15 @@ export class HomeComponent implements OnInit {
   advancedCourses: Course[];
 
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    private http: HttpClient, 
+    private dialog: MatDialog) {
+    /* 
+    http client so the call to get  HTTPClient returning here an observable and 
+    observable is going to obserser its behavior over time by subscribing to the observable 
+    observable might emit multiple values over time 
+    observable might not emot any value at all during its lifecycle
+    */
 
   }
 
@@ -27,9 +35,17 @@ export class HomeComponent implements OnInit {
 
     this.http.get('/api/courses')
       .subscribe(
+        /*
+          once we get the reply from the backend we are looping through the courses 
+          and we will filter the courses based on the categoroy we are asking to receive
+        */
         res => {
 
           const courses: Course[] = res["payload"].sort(sortCoursesBySeqNo);
+          /*
+            we are creating two arrays for begining and advanced courss 
+            then we are going to bring them to the HTML inside of the *ngFOr directives
+          */
 
           this.beginnerCourses = courses.filter(course => course.category == "BEGINNER");
 
