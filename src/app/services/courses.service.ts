@@ -18,7 +18,7 @@ export class CoursesService {
   }
 
 //building reactive service
-  loadAllCourses(): Observable<Courses[]>
+
   /*observable course array is observable that returns 
   the view layer is going to emit the values overtime
   it will emit only one value if our http called to our 
@@ -29,7 +29,7 @@ export class CoursesService {
   the data from the courses without knowing where the data
   is coming from 
   */
-  {
+  
     //we will be returning a new observable 
     // that is where going to be deriving from our 
     // HTTP get observable 
@@ -43,10 +43,12 @@ export class CoursesService {
     //RXJS operators are changable functions that 
     //allow us to quickly combine different observables 
     //in order to obtain different types of results
+
+  loadAllCourses(): Observable<Course[]> {
     return this.http.get<Course[]>("/api/courses")
       .pipe(
         map(
-          res => res["payload"]
+          res => res["payload"])
           );
     //payload is taken from the top of the data sources object
   }

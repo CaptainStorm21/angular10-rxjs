@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 //import service
-
+import { CoursesService} from '../services/courses.service';
 
 @Component({
   selector: 'home',
@@ -15,14 +15,17 @@ import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 })
 export class HomeComponent implements OnInit {
 
-  beginnerCourses: Course[];
+  // beginnerCourses: Course[];
+  // advancedCourses: Course[];
 
-  advancedCourses: Course[];
+  beginnerCourses$: Observable<Course[]>;
+  advancedCourses$: Observable<Course[]>;
+
 
 
   constructor(
     // private http: HttpClient, 
-    private coursesService: coursesService,
+    private coursesService:CoursesService,
     private dialog: MatDialog) {
     /* 
     http client so the call to get  HTTPClient returning here an observable and 
@@ -35,26 +38,17 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    this.http.get('/api/courses')
-      .subscribe(
-        /*
-          once we get the reply from the backend we are looping through the courses 
-          and we will filter the courses based on the categoroy we are asking to receive
-        */
-        res => {
+    //observable variable ends with  $ sign
+    const courses$ = this.coursesService.loadAllCourses();
+    this.beginnerCourses$ = courses$
+      .pipe(
+        map(courses => courses.filter(course => courses.category == "BEGINNER"))
+      );
 
-          const courses: Course[] = res["payload"].sort(sortCoursesBySeqNo);
-          /*
-            we are creating two arrays for begining and advanced courss 
-            then we are going to bring them to the HTML inside of the *ngFOr directives
-          */
-
-          this.beginnerCourses = courses.filter(course => course.category == "BEGINNER");
-
-          this.advancedCourses = courses.filter(course => course.category == "ADVANCED");
-
-        });
-
+    this.advancedCourses$ = courses$
+      .pipe(
+        map(courses => courses.filter(course => courses.category == "ADVANCED"))
+      );
   }
 
   editCourse(course: Course) {
