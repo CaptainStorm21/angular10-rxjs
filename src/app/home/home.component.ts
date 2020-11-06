@@ -5,6 +5,7 @@ import {catchError, delay, delayWhen, filter, finalize, map, retryWhen, shareRep
 import {HttpClient} from '@angular/common/http';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
+//import service
 
 
 @Component({
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
 
 
   constructor(
-    private http: HttpClient, 
+    // private http: HttpClient, 
+    private coursesService: coursesService,
     private dialog: MatDialog) {
     /* 
     http client so the call to get  HTTPClient returning here an observable and 
