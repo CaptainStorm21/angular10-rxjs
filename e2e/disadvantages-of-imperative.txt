@@ -1,0 +1,27 @@
+home component 
+
+we are manually calling subscribe and we are adding here logic to achieve our success
+
+.res => {} is a call back that gets called whever this HTTP observable successflly emits a value
+
+if we are going to start manutlaly subscribe to the mutlple observables we have available we might run into callback hell
+
+current structure of the HOME component creates overwhelming detail how the component receives and renders the results
+
+the logic embedded inside of the res=>{} might be used in mutliple areas and the way it is right now you cannot reuse it 
+and will make the code to look less robust and more repetitive
+
+the other problem with this current set up see the begnnerCourses[] and advancedCourses[] are mutable meaning 
+that original condition of the object can be altered and it is hard to reuse original object with the original data 
+before any kind of manupulation
+
+if the data is being direclty modified at the level of another component in the applicaiton then there 
+there is no way for the component using on push detection to know if the data had been modified
+
+our goal is to build a component when a new version of this data available 
+the component should be able to display the data without necessarily keeping these local mutable 
+variables allow a risk of a potential bugs : see beginnerCourses and advancedCourses variables
+
+also we need to aim at avoiding nesting code that is curently inside of the res => {}
+see const courses: Course[], this.beginnerCourses = ... and this.advancedCourses = ...
+
